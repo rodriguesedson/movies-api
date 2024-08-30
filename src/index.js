@@ -9,13 +9,32 @@ const Film = mongoose.model('Film', {
   trailer_url: String
 });
 
+//use
 app.use(express.json());
 
+//post
+app.post('/', async (req, res) => {
+  const film = new Film({
+    title: req.body.title,
+    description: req.body.description,
+    image_url: req.body.image_url,
+    trailer_url: req.body.trailer_url
+  });
+  await film.save();
+  return res.send('Created successfully');
+});
+
+//get
 app.get('/', async (req, res) => {
   const films = await Film.find();
   return res.send(films);
-})
+});
 
+//put
+
+//delete
+
+//listen
 app.listen(port, async () => {
   console.log(`Server connected at port ${port}`);
   await mongoose.connect('mongodb://172.17.0.1:27017/test')
