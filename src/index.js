@@ -11,6 +11,11 @@ const Film = mongoose.model('Film', {
 
 app.use(express.json());
 
+app.get('/', async (req, res) => {
+  const films = await Film.find();
+  return res.send(films);
+})
+
 app.listen(port, async () => {
   console.log(`Server connected at port ${port}`);
   await mongoose.connect('mongodb://172.17.0.1:27017/test')
