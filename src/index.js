@@ -30,6 +30,12 @@ app.get('/', async (req, res) => {
   return res.send(films);
 });
 
+//get by id
+app.get('/:id', async (req, res) => {
+  const film = await Film.findById(req.params.id);
+  return res.send(film);
+});
+
 //put
 app.put('/:id', async (req, res) => {
   const film = await Film.findByIdAndUpdate(req.params.id, {
