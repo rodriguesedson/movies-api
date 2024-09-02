@@ -36,6 +36,12 @@ app.get('/:id', async (req, res) => {
   return res.send(film);
 });
 
+//get by name
+app.get('/:title', async (req, res) => {
+  const film = await Film.findOne(req.params);
+  return res.send(film);
+})
+
 //put
 app.put('/:id', async (req, res) => {
   const film = await Film.findByIdAndUpdate(req.params.id, {
