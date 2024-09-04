@@ -73,6 +73,43 @@ app.get('/title/:title', async (req, res) => {
   }
 });
 
+//get by filters
+app.get('/api/movies/?*', async (req, res) => {
+  try {
+    const {id, title, description, image_url, trailer_url} = req.query;
+
+    const queryConditions = [];
+
+    if(id) {
+      queryConditions.push({_id: id});
+    }
+    if (title) {
+      queryConditions.push({title: {$regex: new RegExp(title, 'i')}});
+    }
+    if (description) {
+      queryConditions.push({description: {$regex: new RegExp(description, 'i')}});
+    }
+    if (image_url) {
+      queryConditions.push({image_url: {$regex: new RegExp(image_url, 'i')}});
+    }
+    if (trailer_url) {
+      queryConditions.push({trailer_url: {$regex: new RegExp(trailer_url, 'i')}});
+    }
+ 
+    const query = queryConditions.length > 0 ? {$or: queryConditions} : {};
+
+    const film = await Film.find(query);
+
+    if (film.length !== 0) {
+      return res.status(200).send(film);
+    } else {
+      return res.status(404).send('Movie not found. Try another filter');
+    }
+  } catch (error) {
+    return res.status(500).send('Internal server error');
+  }
+});
+
 //put
 app.put('/id/:id', async (req, res) => {
   try {
