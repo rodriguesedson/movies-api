@@ -154,6 +154,8 @@ dist
 
 # Optional stylelint cache
 
+.DS_Store
+
 # SvelteKit build / generate output
 .svelte-kit
 
