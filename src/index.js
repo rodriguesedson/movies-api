@@ -2,12 +2,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const port = 3000;
-const Film = require('./models/film.model.js');
 const filmRoute = require('./routes/film.route.js');
 
 app.use(express.json());
 
-app.use('/api/films', filmRoute);
+app.use('/api/films/', filmRoute);
 
 app.listen(port, async () => {
   console.log(`Server connected at port ${port}`);

@@ -55,28 +55,14 @@ const getFilmByTitle = async (req, res) => {
 const getFilmByFilters = async (req, res) => {
 	try {
 		const {id, title, description, image_url, trailer_url} = req.query;
-
-    const queryConditions = [];
-
-    if(id) {
-      queryConditions.push({_id: id});
-    }
-    if (title) {
-      queryConditions.push({title: {$regex: new RegExp(title, 'i')}});
-    }
-    if (description) {
-      queryConditions.push({description: {$regex: new RegExp(description, 'i')}});
-    }
-    if (image_url) {
-      queryConditions.push({image_url: {$regex: new RegExp(image_url, 'i')}});
-    }
-    if (trailer_url) {
-      queryConditions.push({trailer_url: {$regex: new RegExp(trailer_url, 'i')}});
-    }
- 
-    const query = queryConditions.length > 0 ? {$or: queryConditions} : {};
-
-    const film = await Film.find(query);
+		const conditions = [];
+		if(id) conditions.push({_id: id});
+		if(title) conditions.push({title: {$regex: new RegExp(title, 'i')}});
+		if(description) conditions.push({description: {$regex: new RegExp(description, 'i')}});
+		if(image_url) conditions.push({image_url: {$regex: new RegExp(image_url, 'i')}});
+		if(trailer_url) conditions.push({trailer_url: {$regex: new RegExp(trailer_url, 'i')}});
+		const query = conditions.length > 0 ? {$or: conditions} : {};
+		const film = await Film.find(query);
 
     if (film.length == 0) {
       return res.status(404).send('Movie not found. Try another filter');
