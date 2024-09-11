@@ -10,10 +10,8 @@ const createFilm = async (req, res) => {
       trailer_url: req.body.trailer_url
     });
     await film.save()
-		//TODO: verify correct status code
-    return res.status(200).send(MoviesEnum.createSuccess.message());
+    return res.status(201).send(MoviesEnum.createSuccess.message());
 	} catch (error) {
-		//TODO: verify correct status code
 		return res.status(400).send(MoviesEnum.informationMissing.message());
 	}
 }
@@ -21,39 +19,33 @@ const createFilm = async (req, res) => {
 const getFilms = async (req, res) => {
 	try {
 		const films = await Film.find();
-		//TODO: verify correct status code
 		return res.status(200).send(films);
 	} catch (error) {
-		//TODO: verify correct status code
 		return res.status(500).send(MoviesEnum.internalError.message());
 	}
 }
 
 const getFilmById = async (req, res) => {
 	try {
+		//TODO: verificador parâmetro vazio
 		const film = await Film.findById(req.params.id);
-		//TODO: verify correct status code
     return res.status(200).send(film);
 	} catch (error) {
-		//TODO: verify correct status code
-		//TODO: idNotFound
-		return res.status(404).send('Id not found');
+		return res.status(404).send(MoviesEnum.idNotFound.message());
 	}
 }
 
 const getFilmByTitle = async (req, res) => {
 	try {
+		//TODO: verificador parâmetro vazio
 		const film = await Film.find({title: req.params.title});
-      
+
     if (film.length == 0) {
-			//TODO: verify correct status code
-			//TODO: titleNotFound
-      return res.status(404).send('Title not found');
+      return res.status(404).send(MoviesEnum.titleNotFound.message());
     }
-    //TODO: verify correct status code
+		
     return res.status(200).send(film);
 	} catch (error) {
-		//TODO: verify correct status code
 		return res.status(500).send(MoviesEnum.internalError.message());
 	}
 }
@@ -71,14 +63,10 @@ const getFilmByFilters = async (req, res) => {
 		const film = await Film.find(query);
 
     if (film.length == 0) {
-			//TODO: verify correct status code
-			//TODO: notFound
-			return res.status(404).send('Not found. Try another parameter');
+			return res.status(404).send(MoviesEnum.notFound.message());
     }
-    //TODO: verify correct status code
     return res.status(200).send(film);
 	} catch (error) {
-		//TODO: verify correct status code
 		return res.status(500).send(MoviesEnum.internalError.message());
 	}
 }
@@ -91,26 +79,19 @@ const updateFilm = async (req, res) => {
     }, {
       new: true
     });
-		//TODO: verify correct status code
-		//TODO: updateSuccess
-    return res.status(200).send('Updated successfully');
+		//TODO: verificador estrutura json
+    return res.status(200).send(MoviesEnum.updateSuccess.message());
 	} catch (error) {
-		//TODO: verify correct status code
-		//TODO: idNotFound
-		return res.status(404).send('Unable to update. Id not found');
+		return res.status(404).send(MoviesEnum.idNotFound.message());
 	}
 }
 
 const deleteFilm = async (req, res) => {
 	try {
 		const film = await Film.findByIdAndDelete(req.params.id);
-		//TODO: verify correct status code
-		//TODO: deleteSuccess
-    return res.status(200).send('Deleted Successfully');
+    return res.status(200).send(MoviesEnum.deleteSuccess.message());
 	} catch (error) {
-		//TODO: verify correct status code
-		//TODO: idNotFound
-		return res.status(404).send('Unable to delete. Id not found.');
+		return res.status(404).send(MoviesEnum.idNotFound.message());
 	}
 }
 
